@@ -1,8 +1,25 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play, Zap, Eye, Brain } from "lucide-react";
 import heroImage from "@/assets/hero-image.jpg";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
 export function Hero() {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const handleStartTrial = () => {
+    if (user) {
+      navigate('/dashboard');
+    } else {
+      navigate('/auth');
+    }
+  };
+
+  const handleWatchDemo = () => {
+    // You can implement demo functionality later
+    console.log('Demo functionality coming soon');
+  };
   return (
     <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-secondary relative overflow-hidden">
       {/* Background decoration */}
@@ -36,11 +53,11 @@ export function Hero() {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
-              <Button variant="hero" size="lg" className="group">
-                Start Free Trial
+              <Button variant="hero" size="lg" className="group" onClick={handleStartTrial}>
+                {user ? 'Go to Dashboard' : 'Start Free Trial'}
                 <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button variant="outline" size="lg" className="group">
+              <Button variant="outline" size="lg" className="group" onClick={handleWatchDemo}>
                 <Play className="h-5 w-5" />
                 Watch Demo
               </Button>

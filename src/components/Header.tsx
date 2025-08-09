@@ -1,9 +1,25 @@
 import { Button } from "@/components/ui/button";
 import { Bug, Menu, X } from "lucide-react";
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleAuthClick = () => {
+    if (user) {
+      navigate('/dashboard');
+    } else {
+      navigate('/auth');
+    }
+  };
+
+  const handleTrialClick = () => {
+    navigate('/auth');
+  };
 
   return (
     <header className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-border">
@@ -35,8 +51,12 @@ export function Header() {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="ghost">Sign In</Button>
-            <Button variant="hero" size="sm">Start Free Trial</Button>
+            <Button variant="ghost" onClick={handleAuthClick}>
+              {user ? 'Dashboard' : 'Sign In'}
+            </Button>
+            <Button variant="hero" size="sm" onClick={handleTrialClick}>
+              {user ? 'New Project' : 'Start Free Trial'}
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -65,8 +85,12 @@ export function Header() {
                 Demo
               </a>
               <div className="flex flex-col space-y-2 pt-4">
-                <Button variant="ghost">Sign In</Button>
-                <Button variant="hero" size="sm">Start Free Trial</Button>
+                <Button variant="ghost" onClick={handleAuthClick}>
+                  {user ? 'Dashboard' : 'Sign In'}
+                </Button>
+                <Button variant="hero" size="sm" onClick={handleTrialClick}>
+                  {user ? 'New Project' : 'Start Free Trial'}
+                </Button>
               </div>
             </nav>
           </div>
